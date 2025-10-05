@@ -1,52 +1,288 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Student Portal — Login</title>
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garv Chawla School | Excellence in Education</title>
+  <style>
+    :root {
+      --black: #000;
+      --white: #fff;
+      --gray: #555;
+      --lightgray: #eee;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Inter", "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--white);
+      color: var(--black);
+    }
+
+    header {
+      background: var(--black);
+      color: var(--white);
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      color: var(--white);
+      text-decoration: none;
+      margin-left: 24px;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      background: var(--black);
+      color: var(--white);
+      text-align: center;
+      padding: 100px 20px;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #ccc;
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    section {
+      padding: 60px 10%;
+      border-bottom: 1px solid var(--lightgray);
+    }
+
+    section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .about, .academics, .sports, .facilities {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .about img, .academics img, .sports img, .facilities img {
+      width: 100%;
+      border: 2px solid var(--black);
+      border-radius: 8px;
+    }
+
+    .about p, .academics p, .sports p, .facilities p {
+      line-height: 1.6;
+      font-size: 1.05rem;
+    }
+
+    .form-section {
+      background: var(--black);
+      color: var(--white);
+      text-align: center;
+    }
+
+    .form-section form {
+      max-width: 700px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .form-section input, .form-section textarea, .form-section select {
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      width: 100%;
+      background: var(--white);
+      color: var(--black);
+    }
+
+    .form-section button {
+      background: var(--white);
+      color: var(--black);
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .form-section button:hover {
+      background: var(--lightgray);
+    }
+
+    footer {
+      background: var(--black);
+      color: var(--white);
+      text-align: center;
+      padding: 30px 10px;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .about, .academics, .sports, .facilities {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        margin-top: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header container">
-    <a class="brand" href="dashboard.html">Student Portal</a>
-    <nav><a href="register.html">Register</a> · <a href="terms.html">Terms</a></nav>
+  <header>
+    <h1>Garv Chawla School</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#academics">Academics</a>
+      <a href="#sports">Sports</a>
+      <a href="#facilities">Facilities</a>
+      <a href="#admissions">Admissions</a>
+    </nav>
   </header>
 
-  <main class="container auth-card">
-    <h1>Login</h1>
-    <form id="loginForm" autocomplete="off">
-      <label>Username
-        <input name="username" id="loginUser" required />
-      </label>
-      <label>Password
-        <input name="password" id="loginPass" type="password" required />
-      </label>
-      <div class="actions">
-        <button type="submit">Login</button>
+  <section class="hero">
+    <h2>Welcome to Garv Chawla School</h2>
+    <p>Empowering young minds with innovation, sportsmanship, and excellence since 1998.  
+      Where education meets inspiration.</p>
+  </section>
+
+  <section id="about">
+    <h2>About Us</h2>
+    <div class="about">
+      <div>
+        <p><strong>Garv Chawla School</strong> is a premier K–12 institution located in New Delhi, India.  
+        We focus on holistic development through academics, sports, arts, and technology.  
+        Our students are future-ready — guided by experienced faculty and a progressive curriculum aligned with NEP 2020.</p>
+        <p>Our motto: <em>“Learning Beyond Books.”</em></p>
       </div>
-      <p class="muted">Default demo account: <strong>admin / admin123</strong></p>
-      <div id="loginMsg" class="alert" style="display:none"></div>
+      <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc" alt="School campus">
+    </div>
+  </section>
+
+  <section id="academics">
+    <h2>Academics</h2>
+    <div class="academics">
+      <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7" alt="Classroom">
+      <div>
+        <p>We offer a modern curriculum from Pre-Primary to Grade XII, integrating core subjects with digital literacy, critical thinking, and creativity.  
+        Our timetable includes six dynamic periods daily with a balanced focus on sciences, arts, and personal development.</p>
+        <ul>
+          <li>Smart classrooms</li>
+          <li>STEM & Robotics Labs</li>
+          <li>Weekly innovation projects</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="sports">
+    <h2>Sports & Co-Curriculars</h2>
+    <div class="sports">
+      <div>
+        <p>Sports are at the heart of Garv Chawla School.  
+        Students participate in cricket, football, basketball, swimming, athletics, and yoga.  
+        Our annual “Garv Championship” celebrates team spirit and discipline.</p>
+        <p>We also offer music, art, dance, and debate clubs to nurture creativity and leadership.</p>
+      </div>
+      <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b" alt="Sports activities">
+    </div>
+  </section>
+
+  <section id="facilities">
+    <h2>Campus & Facilities</h2>
+    <div class="facilities">
+      <img src="https://images.unsplash.com/photo-1588072432836-e10032774350" alt="Campus">
+      <div>
+        <p>Our 10-acre campus includes:</p>
+        <ul>
+          <li>Modern digital classrooms</li>
+          <li>Library with 15,000+ volumes</li>
+          <li>Indoor and outdoor sports arenas</li>
+          <li>Science & Robotics laboratories</li>
+          <li>Health & wellness center</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="admissions" class="form-section">
+    <h2>Admissions & Enquiry Form</h2>
+    <form id="enquiryForm">
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email Address" required>
+      <input type="tel" id="phone" placeholder="Phone Number" required>
+      <select id="class">
+        <option value="">Select Class for Admission</option>
+        <option>Nursery</option>
+        <option>KG</option>
+        <option>Class I – V</option>
+        <option>Class VI – VIII</option>
+        <option>Class IX – XII</option>
+      </select>
+      <textarea id="message" rows="4" placeholder="Your Message / Enquiry"></textarea>
+      <button type="submit">Submit Enquiry</button>
     </form>
-  </main>
+    <p id="formMsg" style="margin-top:15px;color:#9f9;"></p>
+  </section>
 
-  <footer class="site-footer container">© 2025 Student Portal — Black & White</footer>
+  <footer>
+    © 2025 Garv Chawla School · All Rights Reserved · Delhi, India
+  </footer>
 
-  <script src="assets/js/app.js"></script>
   <script>
-    // redirect to dashboard if already logged in
-    if (app.auth.isLoggedIn()) location.href = 'dashboard.html';
-
-    document.getElementById('loginForm').addEventListener('submit', function(e){
+    document.getElementById("enquiryForm").addEventListener("submit", function(e){
       e.preventDefault();
-      const u = document.getElementById('loginUser').value.trim();
-      const p = document.getElementById('loginPass').value;
-      const ok = app.auth.login(u,p);
-      const msg = document.getElementById('loginMsg');
-      if (ok) {
-        location.href = 'dashboard.html';
-      } else {
-        msg.style.display='block'; msg.textContent = 'Invalid username or password.';
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const cls = document.getElementById("class").value;
+      const msg = document.getElementById("message").value;
+      if(!name || !email || !phone || !cls){
+        alert("Please fill all required fields.");
+        return;
       }
+      // In real app this would POST to backend. For now store locally:
+      const enquiries = JSON.parse(localStorage.getItem("enquiries") || "[]");
+      enquiries.push({ name, email, phone, cls, msg, time: new Date().toISOString() });
+      localStorage.setItem("enquiries", JSON.stringify(enquiries));
+      document.getElementById("enquiryForm").reset();
+      document.getElementById("formMsg").textContent = "Thank you! Your enquiry has been submitted successfully.";
     });
   </script>
 </body>
