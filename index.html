@@ -1,289 +1,597 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Garv Chawla School | Excellence in Education</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Garv Chawla School — Futuristic K–12 Education (2025)</title>
+  <meta name="description" content="Garv Chawla School — Futuristic education blending academics, sports, tech & character. Admissions open. Experience the future-ready campus." />
+  <meta name="theme-color" content="#000000" />
+  <link rel="icon" href="data:,">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js" defer></script>
+  <!-- tiny GSAP for subtle animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+
   <style>
-    :root {
-      --black: #000;
-      --white: #fff;
-      --gray: #555;
-      --lightgray: #eee;
+    /* ===== Brand / Colors (Monochrome + neon accent) ===== */
+    :root{
+      --bg:#0b0b0b;    /* deep black */
+      --card:#0f0f0f;
+      --fg:#ffffff;
+      --muted:#9a9a9a;
+      --accent:#9be7ff; /* neon-ish cyan for futuristic feel */
+      --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;
+      background:linear-gradient(180deg,#050505 0%, #0b0b0b 60%);
+      color:var(--fg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
     }
 
-    * {
-      box-sizing: border-box;
-      font-family: "Inter", "Poppins", sans-serif;
+    /* ===== LAYOUT ===== */
+    .wrap{max-width:1200px;margin:0 auto;padding:28px}
+    header.site-header{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:18px 28px;border-radius:12px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      position:sticky;top:14px;backdrop-filter:blur(6px);z-index:40;margin:18px;
+      border:1px solid rgba(255,255,255,0.04);
     }
+    .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--fg)}
+    .brand .logo-ico{width:48px;height:48px;border-radius:10px;background:linear-gradient(180deg,var(--card),#151515);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.05)}
+    .brand h1{font-size:1rem;margin:0;font-weight:700;letter-spacing:0.6px}
+    nav{display:flex;gap:18px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:0.95rem;padding:8px 12px;border-radius:8px}
+    nav a.cta{background:linear-gradient(90deg, rgba(155,231,255,0.06), rgba(155,231,255,0.03));color:var(--accent);border:1px solid rgba(155,231,255,0.08)}
+    nav a:hover{color:var(--fg);text-decoration:underline}
 
-    body {
-      margin: 0;
-      background: var(--white);
-      color: var(--black);
+    /* ===== HERO ===== */
+    .hero{
+      display:grid;grid-template-columns:1fr 460px;gap:36px;align-items:center;margin:34px;border-radius:16px;padding:36px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      margin-left:18px;margin-right:18px;border:1px solid rgba(255,255,255,0.04);
     }
+    .hero-left{padding:6px 12px}
+    .kicker{color:var(--accent);font-weight:700;font-size:0.85rem;letter-spacing:1px}
+    .hero h2{font-size:2.15rem;margin:10px 0 12px;font-weight:800;line-height:1.02}
+    .hero p{color:var(--muted);font-size:1.02rem;margin-bottom:18px;max-width:720px}
+    .hero .badges{display:flex;gap:12px;margin-top:6px}
+    .badge{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.04);font-weight:600;color:var(--muted);background:var(--glass)}
 
-    header {
-      background: var(--black);
-      color: var(--white);
-      padding: 20px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+    /* 3D canvas container */
+    #hero-canvas-wrap{width:100%;height:420px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg,#070707,#0c0c0c);display:flex;align-items:center;justify-content:center}
+
+    /* Hero CTA */
+    .hero .cta-row{display:flex;gap:12px;align-items:center;margin-top:18px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);cursor:pointer;text-decoration:none;color:var(--fg);font-weight:700}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),rgba(155,231,255,0.08));color:#001;box-shadow:0 8px 30px rgba(155,231,255,0.06);border:1px solid rgba(155,231,255,0.12)}
+    .btn.ghost{background:transparent;color:var(--muted)}
+
+    /* ===== SECTIONS ===== */
+    section {padding:46px 18px;margin:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));border:1px solid rgba(255,255,255,0.02)}
+    section h3{margin-top:0;font-size:1.4rem;letter-spacing:0.5px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center}
+    .lead{color:var(--muted);font-size:1rem}
+
+    /* Highlights / cards */
+    .highlights{display:flex;gap:18px;flex-wrap:wrap}
+    .card{flex:1;min-width:220px;background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .card h4{margin:0 0 8px;font-size:1rem}
+    .card p{margin:0;color:var(--muted);font-size:0.95rem}
+
+    /* GIF / media */
+    .media-wrap{display:flex;justify-content:center}
+    .gif{max-width:100%;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+
+    /* ===== FORM ===== */
+    .form {max-width:920px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;gap:28px}
+    .form-left{display:grid;gap:12px}
+    .input, textarea, select{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--fg);outline:none}
+    label small{display:block;color:var(--muted);font-size:0.82rem;margin-top:6px}
+    textarea{min-height:120px;resize:vertical}
+    .form-right{padding:18px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));border:1px solid rgba(255,255,255,0.03)}
+    .muted-block{color:var(--muted);font-size:0.92rem}
+    .submit-row{display:flex;gap:12px;justify-content:flex-end;margin-top:10px}
+
+    /* Admin small panel */
+    .admin{
+      position:fixed;right:18px;bottom:18px;background:#060606;border:1px solid rgba(255,255,255,0.04);padding:12px;border-radius:12px;z-index:80;
+      width:320px;max-width:calc(100% - 36px)
     }
+    .admin h5{margin:0 0 8px;font-size:0.95rem}
+    .small-btn{display:inline-block;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer;font-weight:600}
+    .admin pre{white-space:pre-wrap;max-height:240px;overflow:auto;font-size:0.85rem;color:var(--muted)}
 
-    header h1 {
-      margin: 0;
-      font-size: 1.6rem;
-      letter-spacing: 1px;
-    }
+    /* Footer */
+    footer.site-footer{text-align:center;padding:30px 18px;margin-top:36px;color:var(--muted)}
 
-    nav a {
-      color: var(--white);
-      text-decoration: none;
-      margin-left: 24px;
-      font-weight: 500;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    .hero {
-      background: var(--black);
-      color: var(--white);
-      text-align: center;
-      padding: 100px 20px;
-    }
-
-    .hero h2 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      color: #ccc;
-      font-size: 1.1rem;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    section {
-      padding: 60px 10%;
-      border-bottom: 1px solid var(--lightgray);
-    }
-
-    section h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 2rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .about, .academics, .sports, .facilities {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      align-items: center;
-    }
-
-    .about img, .academics img, .sports img, .facilities img {
-      width: 100%;
-      border: 2px solid var(--black);
-      border-radius: 8px;
-    }
-
-    .about p, .academics p, .sports p, .facilities p {
-      line-height: 1.6;
-      font-size: 1.05rem;
-    }
-
-    .form-section {
-      background: var(--black);
-      color: var(--white);
-      text-align: center;
-    }
-
-    .form-section form {
-      max-width: 700px;
-      margin: 0 auto;
-      display: grid;
-      gap: 16px;
-      text-align: left;
-    }
-
-    .form-section input, .form-section textarea, .form-section select {
-      padding: 10px;
-      border: none;
-      border-radius: 4px;
-      width: 100%;
-      background: var(--white);
-      color: var(--black);
-    }
-
-    .form-section button {
-      background: var(--white);
-      color: var(--black);
-      padding: 12px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 1rem;
-    }
-
-    .form-section button:hover {
-      background: var(--lightgray);
-    }
-
-    footer {
-      background: var(--black);
-      color: var(--white);
-      text-align: center;
-      padding: 30px 10px;
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 900px) {
-      .about, .academics, .sports, .facilities {
-        grid-template-columns: 1fr;
-      }
-
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav {
-        margin-top: 10px;
-      }
-    }
+    /* Responsive */
+    @media (max-width:1060px){ .hero{grid-template-columns:1fr; } .form{grid-template-columns:1fr} .wrap{padding:8px} }
+    @media (max-width:420px){ header.site-header{padding:12px} .brand h1{font-size:0.95rem} .hero h2{font-size:1.6rem} }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Garv Chawla School</h1>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#academics">Academics</a>
-      <a href="#sports">Sports</a>
-      <a href="#facilities">Facilities</a>
-      <a href="#admissions">Admissions</a>
-    </nav>
-  </header>
 
-  <section class="hero">
-    <h2>Welcome to Garv Chawla School</h2>
-    <p>Empowering young minds with innovation, sportsmanship, and excellence since 1998.  
-      Where education meets inspiration.</p>
-  </section>
+  <div class="wrap" itemscope itemtype="http://schema.org/School">
+    <!-- Header -->
+    <header class="site-header" role="banner">
+      <a class="brand" href="#" itemprop="name">
+        <div class="logo-ico" aria-hidden="true">
+          <!-- tiny inline SVG mark -->
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L3 7v7c0 4 3 7 9 7s9-3 9-7V7l-9-5z" stroke="#9be7ff" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" /></svg>
+        </div>
+        <h1>Garv Chawla School</h1>
+      </a>
 
-  <section id="about">
-    <h2>About Us</h2>
-    <div class="about">
-      <div>
-        <p><strong>Garv Chawla School</strong> is a premier K–12 institution located in New Delhi, India.  
-        We focus on holistic development through academics, sports, arts, and technology.  
-        Our students are future-ready — guided by experienced faculty and a progressive curriculum aligned with NEP 2020.</p>
-        <p>Our motto: <em>“Learning Beyond Books.”</em></p>
+      <nav role="navigation" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#programs">Programs</a>
+        <a href="#sports">Sports</a>
+        <a href="#campus">Campus</a>
+        <a class="cta" href="#admissions">Admissions</a>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-left">
+        <div class="kicker">Future-Ready K–12 • NEP-aligned • Tech-First</div>
+        <h2 id="hero-heading">Garv Chawla School — Where Curiosity Meets Mastery</h2>
+        <p class="lead">A progressive school combining rigorous academics, elite sports training, creative arts & cutting-edge technology labs.  
+        Small cohorts. Big dreams. Personalized mentorship to shape leaders of tomorrow.</p>
+
+        <div class="badges" aria-hidden="true">
+          <span class="badge">STEM & Robotics</span>
+          <span class="badge">State-of-art Sports Arena</span>
+          <span class="badge">Scholarship Programs</span>
+        </div>
+
+        <div class="cta-row" style="margin-top:18px;">
+          <a class="btn primary" href="#admissions" id="hero-cta">Apply for Admission</a>
+          <a class="btn ghost" href="#campus" id="tour-cta">Virtual Campus Tour</a>
+        </div>
+
+        <!-- quick highlights -->
+        <div style="margin-top:22px" class="highlights" aria-hidden="true">
+          <div class="card">
+            <h4>6 Periods • 5 Subjects</h4>
+            <p>Balanced daily timetable with hands-on labs and integrated project periods.</p>
+          </div>
+          <div class="card">
+            <h4>After-School Clubs</h4>
+            <p>Music, Debate, Robotics, Eco-Club, and Entrepreneurship Lab.</p>
+          </div>
+          <div class="card">
+            <h4>Wellness</h4>
+            <p>On-campus nurse & mental wellness counselors; yoga and mindfulness built into schedule.</p>
+          </div>
+        </div>
       </div>
-      <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc" alt="School campus">
-    </div>
-  </section>
 
-  <section id="academics">
-    <h2>Academics</h2>
-    <div class="academics">
-      <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7" alt="Classroom">
-      <div>
-        <p>We offer a modern curriculum from Pre-Primary to Grade XII, integrating core subjects with digital literacy, critical thinking, and creativity.  
-        Our timetable includes six dynamic periods daily with a balanced focus on sciences, arts, and personal development.</p>
-        <ul>
-          <li>Smart classrooms</li>
-          <li>STEM & Robotics Labs</li>
-          <li>Weekly innovation projects</li>
-        </ul>
+      <!-- 3D Canvas + GIF side -->
+      <div aria-hidden="false">
+        <div id="hero-canvas-wrap" title="Garv Chawla School 3D logo">
+          <canvas id="three-canvas" style="width:100%;height:100%;display:block"></canvas>
+        </div>
+
+        <!-- optional animated gif / promo below -->
+        <div style="margin-top:14px" class="media-wrap">
+          <!-- Futuristic GIF: using GIPHY public asset -->
+          <img class="gif" alt="Students using technology" src="https://media.giphy.com/media/l0MYA4b7z3G8Q1x4s/giphy.gif" style="max-height:120px;object-fit:cover;">
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="sports">
-    <h2>Sports & Co-Curriculars</h2>
-    <div class="sports">
-      <div>
-        <p>Sports are at the heart of Garv Chawla School.  
-        Students participate in cricket, football, basketball, swimming, athletics, and yoga.  
-        Our annual “Garv Championship” celebrates team spirit and discipline.</p>
-        <p>We also offer music, art, dance, and debate clubs to nurture creativity and leadership.</p>
+    <!-- ABOUT -->
+    <section id="about" aria-labelledby="about-h">
+      <h3 id="about-h">About Garv Chawla School</h3>
+      <div class="grid-2">
+        <div>
+          <p class="lead">Founded in 1998 and reimagined for the 21st century, Garv Chawla School blends classical pedagogy with futuristic tools. We emphasize experiential learning, interdisciplinary projects, and global competencies. Our alumni go on to top universities and professional programs worldwide.</p>
+
+          <ul style="color:var(--muted);margin-top:12px">
+            <li><strong>Vision:</strong> Educate resilient learners who create solutions for real-world problems.</li>
+            <li><strong>Mission:</strong> Equip students with competencies — critical thinking, collaboration, communication, creativity, and character.</li>
+            <li><strong>Accreditations:</strong> National & State recognized; STEM partner schools; International exchange programs.</li>
+          </ul>
+        </div>
+
+        <div>
+          <img class="gif" alt="campus life" src="https://media.giphy.com/media/26FPy3QZQqGtDcrja/giphy.gif" style="width:100%;height:100%;object-fit:cover;">
+        </div>
       </div>
-      <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b" alt="Sports activities">
-    </div>
-  </section>
+    </section>
 
-  <section id="facilities">
-    <h2>Campus & Facilities</h2>
-    <div class="facilities">
-      <img src="https://images.unsplash.com/photo-1588072432836-e10032774350" alt="Campus">
-      <div>
-        <p>Our 10-acre campus includes:</p>
-        <ul>
-          <li>Modern digital classrooms</li>
-          <li>Library with 15,000+ volumes</li>
-          <li>Indoor and outdoor sports arenas</li>
-          <li>Science & Robotics laboratories</li>
-          <li>Health & wellness center</li>
-        </ul>
+    <!-- PROGRAMS -->
+    <section id="programs" aria-labelledby="programs-h">
+      <h3 id="programs-h">Programs & Curriculum</h3>
+      <div class="grid-2">
+        <div>
+          <p class="lead">We offer an integrated K–12 curriculum with multiple pathways: rigorous academics, vocational tracks, and college-prep options. Students experience project-based learning, internships, and mentorships with industry partners.</p>
+
+          <div style="margin-top:16px" class="highlights">
+            <div class="card"><h4>STEM & Robotics</h4><p>Robotics lab with industry-grade kits and competitive teams.</p></div>
+            <div class="card"><h4>Creative Arts</h4><p>Performing arts auditorium, recording studio, visual arts ateliers.</p></div>
+            <div class="card"><h4>Language Labs</h4><p>Multilingual instruction and global exchange programs.</p></div>
+          </div>
+        </div>
+        <div>
+          <img class="gif" alt="coding lab" src="https://media.giphy.com/media/3o7qE1YN7aBOFPRw8E/giphy.gif" style="width:100%;height:100%;object-fit:cover;">
+        </div>
       </div>
+    </section>
+
+    <!-- SPORTS -->
+    <section id="sports" aria-labelledby="sports-h">
+      <h3 id="sports-h">Sports & Wellness</h3>
+      <div class="grid-2">
+        <div>
+          <p class="lead">From professional coaching in cricket, football and swimming to yoga & mindfulness, our sports program builds character, teamwork, and resilience.</p>
+          <ul style="color:var(--muted);margin-top:12px">
+            <li>Full-size cricket pitch, turf & nets</li>
+            <li>Olympic-length swimming pool</li>
+            <li>Indoor gym, athletics track, and sports science lab</li>
+            <li>Physical Education included in daily timetable</li>
+          </ul>
+        </div>
+        <div>
+          <img class="gif" alt="sports montage" src="https://media.giphy.com/media/3o6ZsY5J7Q4d2cN3lK/giphy.gif" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+      </div>
+    </section>
+
+    <!-- CAMPUS -->
+    <section id="campus" aria-labelledby="campus-h">
+      <h3 id="campus-h">Campus & Facilities</h3>
+      <div class="grid-2">
+        <div>
+          <p class="lead">10-acre green campus with sustainable architecture, solar power, greenhouses and sensor-driven smart classrooms. Library with 20,000+ books and a digital archive. Cafeteria with nutritionist-designed menus.</p>
+          <div style="margin-top:12px" class="highlights">
+            <div class="card"><h4>Library</h4><p>Research zones, reading pods & digital access.</p></div>
+            <div class="card"><h4>Health Center</h4><p>24/7 nurse, telemedicine, counselors.</p></div>
+            <div class="card"><h4>Transport</h4><p>GPS-enabled school buses with safe pick-up.</p></div>
+          </div>
+        </div>
+        <div>
+          <img class="gif" alt="campus drone" src="https://media.giphy.com/media/xUPGcguWZHRC2HyBRS/giphy.gif" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+      </div>
+    </section>
+
+    <!-- ADMISSIONS / FORM -->
+    <section id="admissions" aria-labelledby="admissions-h">
+      <h3 id="admissions-h">Admissions & Enquiry — Apply Now</h3>
+      <p class="lead">Complete the form below and our admissions team will get back within 48 hours. We accept limited seats for every cohort — early applications preferred.</p>
+
+      <form id="admissionsForm" class="form" aria-label="Admissions form">
+        <div class="form-left">
+          <label>
+            Full name
+            <input class="input" id="in_name" name="name" type="text" placeholder="e.g. Aarav Singh" required>
+          </label>
+
+          <label>
+            Email
+            <input class="input" id="in_email" name="email" type="email" placeholder="you@domain.com" required>
+            <small>We use this email to send application updates.</small>
+          </label>
+
+          <label>
+            Phone
+            <input class="input" id="in_phone" name="phone" type="tel" placeholder="+91 98xxxx" required>
+          </label>
+
+          <label>
+            Applying for
+            <select id="in_class" class="input" required>
+              <option value="">Select class / program</option>
+              <option>Nursery / Pre-K</option>
+              <option>KG</option>
+              <option>Class I – V</option>
+              <option>Class VI – VIII</option>
+              <option>Class IX – X</option>
+              <option>Class XI – XII (Science)</option>
+              <option>Class XI – XII (Commerce/Arts)</option>
+            </select>
+          </label>
+
+          <label>
+            Preferred intake / month
+            <input class="input" id="in_intake" placeholder="e.g. July 2026" />
+          </label>
+
+          <label>
+            Siblings / alumni (optional)
+            <input class="input" id="in_sib" placeholder="Name & grade">
+          </label>
+
+        </div>
+
+        <div class="form-right">
+          <label>
+            Short note / reason for applying
+            <textarea id="in_msg" placeholder="Tell us about your child & expectations..." ></textarea>
+          </label>
+
+          <div style="margin-top:8px" class="muted-block">
+            <strong>Important:</strong> By submitting, you agree to our <a href="#terms" style="color:var(--accent)">Terms & Privacy</a>. Application fee (if any) and documents will be requested after provisional acceptance.
+          </div>
+
+          <div class="submit-row" style="margin-top:18px">
+            <button type="button" id="saveDraft" class="small-btn">Save Draft</button>
+            <button type="submit" class="btn primary">Submit Application</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- TERMS quick -->
+    <section id="terms" aria-labelledby="terms-h">
+      <h3 id="terms-h">Terms & Privacy (Short)</h3>
+      <p class="lead">This site is a demo site for Garv Chawla School. For production use, applications are processed securely on our admissions portal. Data saved locally is for demo only. To make this form submit to an email or Google Sheet, connect a server endpoint — I can provide that integration.</p>
+    </section>
+
+    <footer class="site-footer">
+      <div itemscope itemtype="http://schema.org/PostalAddress" style="margin-bottom:10px">
+        <div><strong>Garv Chawla School</strong> — Model Campus, Anand Vihar, New Delhi, India</div>
+        <div>Email: admissions@garvchawlamschool.example · Phone: +91 98765 43210</div>
+      </div>
+      © 2025 Garv Chawla School — Built for the future.
+    </footer>
+
+  </div>
+
+  <!-- Admin floating panel (client-only demo) -->
+  <div class="admin" id="adminPanel" role="region" aria-label="Admissions Admin">
+    <h5>Admissions — Admin (demo)</h5>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <button class="small-btn" id="openStorage">Show Submissions</button>
+      <button class="small-btn" id="downloadCsv">Export CSV</button>
+      <button class="small-btn" id="clearStorage">Clear</button>
     </div>
-  </section>
+    <pre id="adminList" style="display:none">No submissions yet.</pre>
+  </div>
 
-  <section id="admissions" class="form-section">
-    <h2>Admissions & Enquiry Form</h2>
-    <form id="enquiryForm">
-      <input type="text" id="name" placeholder="Full Name" required>
-      <input type="email" id="email" placeholder="Email Address" required>
-      <input type="tel" id="phone" placeholder="Phone Number" required>
-      <select id="class">
-        <option value="">Select Class for Admission</option>
-        <option>Nursery</option>
-        <option>KG</option>
-        <option>Class I – V</option>
-        <option>Class VI – VIII</option>
-        <option>Class IX – XII</option>
-      </select>
-      <textarea id="message" rows="4" placeholder="Your Message / Enquiry"></textarea>
-      <button type="submit">Submit Enquiry</button>
-    </form>
-    <p id="formMsg" style="margin-top:15px;color:#9f9;"></p>
-  </section>
-
-  <footer>
-    © 2025 Garv Chawla School · All Rights Reserved · Delhi, India
-  </footer>
-
+  <!-- ===== SCRIPT: Three.js 3D logo + Interactions + Form handling ===== -->
   <script>
-    document.getElementById("enquiryForm").addEventListener("submit", function(e){
-      e.preventDefault();
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const phone = document.getElementById("phone").value;
-      const cls = document.getElementById("class").value;
-      const msg = document.getElementById("message").value;
-      if(!name || !email || !phone || !cls){
-        alert("Please fill all required fields.");
-        return;
+  // Wait for libraries to load
+  (function(){
+    // ---------- 3D Hero (Three.js) ----------
+    function initThree(){
+      const canvas = document.getElementById('three-canvas');
+      if(!canvas || !window.THREE) return;
+
+      const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+      renderer.setClearColor(0x000000, 0); // transparent
+
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(35, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+      camera.position.set(0, 0, 5);
+
+      // lighting
+      const dir = new THREE.DirectionalLight(0xffffff, 0.9);
+      dir.position.set(5,5,5);
+      scene.add(dir);
+      scene.add(new THREE.AmbientLight(0x222222));
+
+      // geometry: stylized icosahedron + wireframe
+      const geom = new THREE.IcosahedronGeometry(1.45, 1);
+      const mat = new THREE.MeshStandardMaterial({color:0xffffff, metalness:0.9, roughness:0.15, emissive:0x002233, emissiveIntensity:0.3});
+      const mesh = new THREE.Mesh(geom, mat);
+
+      // subtle inner glow ring
+      const wire = new THREE.LineSegments(new THREE.WireframeGeometry(geom), new THREE.LineBasicMaterial({color:0x9be7ff, linewidth:1, opacity:0.95}));
+      wire.renderOrder = 1; mesh.renderOrder = 2;
+
+      // orbiting small nodes
+      const nodes = new THREE.Group();
+      for(let i=0;i<8;i++){
+        const s = new THREE.Mesh(new THREE.SphereGeometry(0.055,12,12), new THREE.MeshBasicMaterial({color:0x9be7ff}));
+        const ang = i * (Math.PI*2/8);
+        s.position.set(Math.cos(ang)*2.1, Math.sin(ang)*1.0, (Math.sin(ang*1.7))*0.6);
+        nodes.add(s);
       }
-      // In real app this would POST to backend. For now store locally:
-      const enquiries = JSON.parse(localStorage.getItem("enquiries") || "[]");
-      enquiries.push({ name, email, phone, cls, msg, time: new Date().toISOString() });
-      localStorage.setItem("enquiries", JSON.stringify(enquiries));
-      document.getElementById("enquiryForm").reset();
-      document.getElementById("formMsg").textContent = "Thank you! Your enquiry has been submitted successfully.";
+
+      scene.add(mesh, wire, nodes);
+
+      // subtle camera movement by mouse
+      let mouseX=0, mouseY=0;
+      const onMove = (e) => {
+        const r = canvas.getBoundingClientRect();
+        mouseX = ( (e.clientX - r.left) / r.width - 0.5 ) * 2;
+        mouseY = ( (e.clientY - r.top) / r.height - 0.5 ) * -2;
+      };
+      canvas.addEventListener('mousemove', onMove);
+
+      function resize(){
+        const w = canvas.clientWidth;
+        const h = canvas.clientHeight;
+        if (canvas.width !== w || canvas.height !== h){
+          renderer.setSize(w, h, false);
+          camera.aspect = w/h;
+          camera.updateProjectionMatrix();
+        }
+      }
+
+      // animate
+      let last = 0;
+      function animate(t){
+        const dt = (t - last) * 0.001; last = t;
+        // rotate shape
+        mesh.rotation.y += 0.4 * dt;
+        mesh.rotation.x += 0.12 * dt;
+        wire.rotation.copy(mesh.rotation);
+
+        // nodes orbit
+        nodes.children.forEach((n, i) => {
+          const s = 1.0 + Math.sin(t*0.002 + i)*0.06;
+          n.position.x = Math.cos(t*0.001 + i) * (2.1 + 0.12*Math.sin(t*0.002 + i*1.3));
+          n.position.y = Math.sin(t*0.001 + i) * (1.0 + 0.06*Math.cos(t*0.001));
+          n.scale.set(s,s,s);
+        });
+
+        // gentle camera follow based on mouse
+        camera.position.x += (mouseX*0.6 - camera.position.x) * 0.06;
+        camera.position.y += (mouseY*0.6 - camera.position.y) * 0.06;
+        camera.lookAt(0,0,0);
+
+        resize();
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+
+      // simple adapt to resize window
+      window.addEventListener('resize', () => {
+        const w = canvas.clientWidth; const h = canvas.clientHeight;
+        renderer.setSize(w,h,false);
+        camera.aspect = w/h; camera.updateProjectionMatrix();
+      });
+
+      // nice entrance using GSAP if available
+      if(window.gsap){
+        gsap.from('.hero-left h2', {y:20, opacity:0, duration:0.8, ease:"power3.out"});
+        gsap.from('.hero-left p', {y:12, opacity:0, delay:0.1, duration:0.9});
+        gsap.from('.badge', {y:6, opacity:0, delay:0.2, stagger:0.08});
+      }
+    }
+
+    // Initialize when DOM is ready and THREE loaded
+    function attemptInit(){
+      if(document.readyState === 'complete' || document.readyState === 'interactive'){
+        initThree();
+      } else {
+        document.addEventListener('DOMContentLoaded', initThree);
+      }
+    }
+    attemptInit();
+
+    // ---------- FORM STORAGE / ADMIN (client-only) ----------
+    const STORAGE_KEY = 'gcschool_admissions_v1';
+
+    function getSubmissions(){ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+    function saveSubmission(obj){
+      const arr = getSubmissions();
+      obj.id = Date.now() + Math.floor(Math.random()*999);
+      obj.submittedAt = (new Date()).toISOString();
+      arr.unshift(obj);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+      return obj;
+    }
+
+    // populate saved draft
+    document.addEventListener('DOMContentLoaded', function(){
+      const form = document.getElementById('admissionsForm');
+      const draftBtn = document.getElementById('saveDraft');
+
+      // Load any draft
+      const draft = JSON.parse(localStorage.getItem('gcschool_draft') || 'null');
+      if(draft){
+        ['in_name','in_email','in_phone','in_class','in_intake','in_sib','in_msg'].forEach(k=>{
+          const el = document.getElementById(k);
+          if(el && draft[k]) el.value = draft[k];
+        });
+      }
+
+      // Save draft
+      draftBtn.addEventListener('click', function(){
+        const draftObj = {
+          in_name: document.getElementById('in_name').value,
+          in_email: document.getElementById('in_email').value,
+          in_phone: document.getElementById('in_phone').value,
+          in_class: document.getElementById('in_class').value,
+          in_intake: document.getElementById('in_intake').value,
+          in_sib: document.getElementById('in_sib').value,
+          in_msg: document.getElementById('in_msg').value,
+          savedAt: new Date().toISOString()
+        };
+        localStorage.setItem('gcschool_draft', JSON.stringify(draftObj));
+        draftBtn.textContent = 'Draft saved';
+        setTimeout(()=> draftBtn.textContent = 'Save Draft', 1400);
+      });
+
+      // Submit handler
+      form.addEventListener('submit', function(ev){
+        ev.preventDefault();
+        const name = document.getElementById('in_name').value.trim();
+        const email = document.getElementById('in_email').value.trim();
+        const phone = document.getElementById('in_phone').value.trim();
+        const cls = document.getElementById('in_class').value;
+        const intake = document.getElementById('in_intake').value;
+        const sib = document.getElementById('in_sib').value;
+        const msg = document.getElementById('in_msg').value.trim();
+
+        if(!name || !email || !phone || !cls){
+          alert('Please fill required fields (name, email, phone, class).');
+          return;
+        }
+
+        const saved = saveSubmission({name,email,phone,cls,intake,sib,msg});
+        // clear draft
+        localStorage.removeItem('gcschool_draft');
+        form.reset();
+
+        // friendly UX after submit
+        alert('Application received. Reference ID: ' + saved.id + '\\nOur admissions team will contact you within 48 hours.');
+        // show admin panel entries if open
+        updateAdminPanel();
+      });
+
+      // Admin controls
+      document.getElementById('openStorage').addEventListener('click', function(){
+        const pre = document.getElementById('adminList');
+        const data = getSubmissions();
+        if(data.length === 0){
+          pre.style.display = 'block'; pre.textContent = 'No submissions yet.';
+        } else {
+          pre.style.display = 'block';
+          pre.textContent = data.map(d=>`ID:${d.id} • ${d.name} • ${d.cls} • ${d.email} • ${d.phone} • ${new Date(d.submittedAt).toLocaleString()}`).join('\\n');
+        }
+      });
+
+      document.getElementById('clearStorage').addEventListener('click', function(){
+        if(!confirm('Clear all demo submissions from localStorage?')) return;
+        localStorage.removeItem(STORAGE_KEY);
+        document.getElementById('adminList').style.display='block';
+        document.getElementById('adminList').textContent='Cleared';
+      });
+
+      document.getElementById('downloadCsv').addEventListener('click', function(){
+        const arr = getSubmissions();
+        if(arr.length === 0){ alert('No submissions to export.'); return; }
+        const head = ['ID','Name','Email','Phone','Class','Intake','Siblings','Message','SubmittedAt'];
+        const rows = arr.map(a=>[a.id,a.name,a.email,a.phone,a.cls,a.intake || '', a.sib || '', (a.msg || '').replace(/\\n/g,' '), a.submittedAt]);
+        const csv = [head].concat(rows).map(r => r.map(cell => `"${String(cell||'').replace(/"/g,'""')}"`).join(',')).join('\\n');
+        const blob = new Blob([csv], {type:'text/csv'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'garvchawla_admissions.csv'; document.body.appendChild(a); a.click();
+        a.remove(); URL.revokeObjectURL(url);
+      });
+
+      function updateAdminPanel(){
+        const arr = getSubmissions();
+        const pre = document.getElementById('adminList');
+        if(arr.length === 0){ pre.style.display='block'; pre.textContent='No submissions yet.'; }
+        else {
+          pre.style.display='block';
+          pre.textContent = arr.slice(0,20).map(d=>`• ${d.name} — ${d.cls} — ${d.email} — ${new Date(d.submittedAt).toLocaleString()}`).join('\\n');
+        }
+      }
+
+      // initial admin display
+      updateAdminPanel();
     });
+
+  })();
   </script>
 </body>
 </html>
