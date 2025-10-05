@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Student Portal — Dashboard</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header class="site-header container">
+    <a class="brand" href="dashboard.html">Student Portal</a>
+    <nav>
+      <a href="student_form.html">Add Student</a>
+      <a href="terms.html">Terms</a>
+      <a id="logoutBtn" href="#">Logout</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <h1>Students</h1>
+        <div>
+          <input id="search" placeholder="Search name, email or course" />
+          <button id="exportCsv">Export CSV</button>
+        </div>
+      </div>
+
+      <table class="table" id="studentsTable">
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Course</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p id="empty" class="muted" style="display:none">No students yet — add one.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer container">© 2025 Student Portal — Black & White</footer>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    if (!app.auth.isLoggedIn()) location.href = 'index.html';
+
+    const tableBody = document.querySelector('#studentsTable tbody');
+    const empty = document.getElementById('empty');
+    const search = document.getElementById('search');
+
+    function render() {
+      const students = app.storage.getStudents();
+      const q = (search.value||'').toLowerCase();
+      tableBody.innerHTML = '';
+      const filtered = students.filter(s=>{
+        return !q || (s.firstName+' '+s.lastName).toLowerCase().includes(q)
+          || (s.email||'').toLowerCase().includes(q)
+          || (s.course||'').toLowerCase().includes(q);
+      });
+      if (filtered.length===0) { empty.style.display='block'; } else { empty.style.display='none'; }
+      for (const s of filtered) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${s.id}</td>
+          <td>${s.firstName} ${s.lastName}</td>
+          <td>${s.email||''}</td>
+          <td>${s.phone||''}</td>
+          <td>${s.course||''}</td>
+          <td>
+            <button class="edit" data-id="${s.id}">Edit</button>
+            <button class="del" data-id="${s.id}">Delete</button>
+          </td>`;
+        tableBody.appendChild(tr);
+      }
+      document.querySelectorAll('button.edit').forEach(b=>{
+        b.addEventListener('click', e=>{
+          const id = e.target.dataset.id;
+          location.href = 'student_form.html?id='+encodeURIComponent(id);
+        });
+      });
+      document.querySelectorAll('button.del').forEach(b=>{
+        b.addEventListener('click', e=>{
+          if (!confirm('Delete this student?')) return;
+          app.storage.deleteStudent(+e.target.dataset.id);
+          render();
+        });
+      });
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', function(e){
+      e.preventDefault(); app.auth.logout(); location.href='index.html';
+    });
+    document.getElementById('exportCsv').addEventListener('click', function(){
+      const csv = app.storage.toCSV();
+      const blob = new Blob([csv], {type:'text/csv'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'students.csv';
+      a.click(); URL.revokeObjectURL(url);
+    });
+    search.addEventListener('input', render);
+
+    render();
+  </script>
+</body>
+</html>
