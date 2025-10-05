@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Student Portal — Register</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header class="site-header container">
+    <a class="brand" href="dashboard.html">Student Portal</a>
+    <nav><a href="index.html">Login</a> · <a href="terms.html">Terms</a></nav>
+  </header>
+
+  <main class="container auth-card">
+    <h1>Create account</h1>
+    <form id="regForm" autocomplete="off">
+      <label>Username<input id="regUser" required /></label>
+      <label>Password<input id="regPass" type="password" required /></label>
+      <label>Confirm Password<input id="regPass2" type="password" required /></label>
+      <div class="actions"><button type="submit">Register</button></div>
+      <div id="regMsg" class="alert" style="display:none"></div>
+    </form>
+    <p class="muted">Already have an account? <a href="index.html">Login</a></p>
+  </main>
+
+  <footer class="site-footer container">© 2025 Student Portal — Black & White</footer>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    if (app.auth.isLoggedIn()) location.href = 'dashboard.html';
+    document.getElementById('regForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const u = document.getElementById('regUser').value.trim();
+      const p = document.getElementById('regPass').value;
+      const p2 = document.getElementById('regPass2').value;
+      const msg = document.getElementById('regMsg');
+      msg.style.display='none';
+      if (p !== p2) { msg.style.display='block'; msg.textContent = 'Passwords do not match'; return; }
+      const r = app.auth.register(u,p);
+      if (!r.success) { msg.style.display='block'; msg.textContent = r.message; return; }
+      // registered -> auto-login and go to dashboard
+      app.auth.login(u,p);
+      location.href = 'dashboard.html';
+    });
+  </script>
+</body>
+</html>
