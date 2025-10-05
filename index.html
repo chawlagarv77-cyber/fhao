@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Student Portal — Login</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header class="site-header container">
+    <a class="brand" href="dashboard.html">Student Portal</a>
+    <nav><a href="register.html">Register</a> · <a href="terms.html">Terms</a></nav>
+  </header>
+
+  <main class="container auth-card">
+    <h1>Login</h1>
+    <form id="loginForm" autocomplete="off">
+      <label>Username
+        <input name="username" id="loginUser" required />
+      </label>
+      <label>Password
+        <input name="password" id="loginPass" type="password" required />
+      </label>
+      <div class="actions">
+        <button type="submit">Login</button>
+      </div>
+      <p class="muted">Default demo account: <strong>admin / admin123</strong></p>
+      <div id="loginMsg" class="alert" style="display:none"></div>
+    </form>
+  </main>
+
+  <footer class="site-footer container">© 2025 Student Portal — Black & White</footer>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    // redirect to dashboard if already logged in
+    if (app.auth.isLoggedIn()) location.href = 'dashboard.html';
+
+    document.getElementById('loginForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const u = document.getElementById('loginUser').value.trim();
+      const p = document.getElementById('loginPass').value;
+      const ok = app.auth.login(u,p);
+      const msg = document.getElementById('loginMsg');
+      if (ok) {
+        location.href = 'dashboard.html';
+      } else {
+        msg.style.display='block'; msg.textContent = 'Invalid username or password.';
+      }
+    });
+  </script>
+</body>
+</html>
