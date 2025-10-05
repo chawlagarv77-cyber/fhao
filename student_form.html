@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Student Portal — Student</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header class="site-header container">
+    <a class="brand" href="dashboard.html">Student Portal</a>
+    <nav><a href="dashboard.html">Dashboard</a> · <a href="terms.html">Terms</a> · <a id="logoutBtn" href="#">Logout</a></nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1 id="heading">Student Details</h1>
+      <form id="studentForm">
+        <div class="grid">
+          <label>First name <input id="firstName" required /></label>
+          <label>Last name <input id="lastName" required /></label>
+          <label>Email <input id="email" type="email" /></label>
+          <label>Phone <input id="phone" /></label>
+          <label>Course <input id="course" required /></label>
+          <label>Address <textarea id="address"></textarea></label>
+        </div>
+        <div class="actions">
+          <button type="submit">Save</button>
+          <button type="button" id="cancel">Cancel</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer container">© 2025 Student Portal — Black & White</footer>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    if (!app.auth.isLoggedIn()) location.href = 'index.html';
+    document.getElementById('logoutBtn').addEventListener('click', function(e){ e.preventDefault(); app.auth.logout(); location.href='index.html'; });
+
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    if (id) {
+      const st = app.storage.getStudent(+id);
+      if (st) {
+        document.getElementById('heading').textContent = 'Edit Student';
+        ['firstName','lastName','email','phone','course','address'].forEach(k=>{
+          document.getElementById(k).value = st[k] || '';
+        });
+      }
+    }
+
+    document.getElementById('studentForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const student = {
+        id: id ? +id : undefined,
+        firstName: document.getElementById('firstName').value.trim(),
+        lastName: document.getElementById('lastName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        course: document.getElementById('course').value.trim(),
+        address: document.getElementById('address').value.trim()
+      };
+      app.storage.saveStudent(student);
+      location.href = 'dashboard.html';
+    });
+
+    document.getElementById('cancel').addEventListener('click', function(){ location.href='dashboard.html'; });
+  </script>
+</body>
+</html>
